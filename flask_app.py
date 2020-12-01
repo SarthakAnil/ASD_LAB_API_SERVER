@@ -30,6 +30,23 @@ def user_table():
 	finally:
 		cursor.close() 
 		conn.close()
+@app.route('/user_check')
+def user_check():
+	try:
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		cursor.execute("SELECT Exists(SELECT * FROM user_table WHERE login_username = 'ocm18cs005');")
+		empRows = cursor.fetchall()
+
+		respone = jsonify(empRows)
+		respone.status_code = 200
+		return respone
+
+	except Exception as e:
+		print(e)
+	finally:
+		cursor.close() 
+		conn.close()
 
 		
 @app.errorhandler(404)
