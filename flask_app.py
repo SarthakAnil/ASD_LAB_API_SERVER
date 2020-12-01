@@ -48,6 +48,13 @@ def user_check():
 
 	except Exception as e:
 		print(e)
+		message = {
+		'status': 500,
+		'message': 'error is method ' ,
+		}
+		respone = jsonify(message)
+		respone.status_code = 500
+		return respone
 	finally:
 		cursor.close() 
 		conn.close()
