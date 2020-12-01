@@ -23,6 +23,8 @@ def user_table():
 		respone = jsonify(json_data)
 		respone.status_code = 200
 		return respone
+	except cursor.Error as err:
+		print(err)
 	except Exception as e:
 		print(e)
 	finally:
