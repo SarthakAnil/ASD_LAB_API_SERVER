@@ -30,7 +30,7 @@ def user_table():
 	finally:
 		cursor.close() 
 		conn.close()
-@app.route('/user_check')
+@app.route('/user_check',methods=['POST'])
 def user_check():
 	try:
 		conn = mysql.connect()
