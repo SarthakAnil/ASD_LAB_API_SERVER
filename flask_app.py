@@ -7,7 +7,7 @@ from config import mysql
 @app.route('/')
 def hello_world():
     return 'Hello from Flask!'
-
+##########################################################################################
 @app.route('/user_table')
 def user_table():
 	try:
@@ -30,6 +30,8 @@ def user_table():
 	finally:
 		cursor.close()
 		conn.close()
+
+##//////////////////////////////////////////////////////////////////////////////////////////////////////
 @app.route('/user_check',methods=['POST'])
 def user_check():
 	try:
@@ -61,8 +63,37 @@ def user_check():
 	finally:
 		cursor.close()
 		conn.close()
+##///////////////////////////////////////////////////////////////////////////////////////////////////////
+@app.route('/pass_check',methods=['POST'])
+def pass_check():
+	try:
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		json = request.get_json(force=True)
+		usrPass = json['pass']
+		cursor.execute("SELECT pass FROM user_table where login_username = '%s'",usrPass)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+		respone = jsonify(json_data)
+		respone.status_code = 200
+		return respone
 
-
+	except Exception as e:
+		print(e)
+		message = {
+		'status': 500,
+		'message': 'error in method ',
+		}
+		respone = jsonify(message)
+		respone.status_code = 500
+		return respone
+	finally:
+		cursor.close()
+		conn.close()
+###########################################################################################################
 @app.errorhandler(404)
 def not_found(error=None):
 	message = {
