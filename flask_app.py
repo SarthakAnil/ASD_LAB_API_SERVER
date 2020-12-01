@@ -8,6 +8,28 @@ from config import mysql
 def hello_world():
     return 'Hello from Flask!'
 
+@app.route('/user_table')
+def user_table():
+	try:
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		cursor.execute("Select * from user_table")
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+		#return json.dumps(json_data)
+		respone = jsonify(json_data)
+		respone.status_code = 200
+		return respone
+	except Exception as e:
+		print(e)
+	finally:
+		cursor.close() 
+		conn.close()
+
+		
 @app.errorhandler(404)
 def not_found(error=None):
 	message = {
