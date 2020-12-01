@@ -51,7 +51,7 @@ def user_check():
 		message = {
 		'status': 500,
 		'message': 'error in method ',
-		'request.json': request.json  ,
+
 		}
 		respone = jsonify(message)
 		respone.status_code = 500
