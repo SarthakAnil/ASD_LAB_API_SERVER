@@ -3,7 +3,7 @@ from flask import request
 from config import app
 from config import mysql
 
-@app.route('/user')
+@app.route('/user_table')
 def emp():
 	try:
 		conn = mysql.connect()
