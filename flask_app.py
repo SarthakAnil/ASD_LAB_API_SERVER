@@ -35,6 +35,7 @@ def user_check():
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor()
+		print(request.json)
 		json = request.json
 		usrName = json['usrName']
 		print(usrName)
