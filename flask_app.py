@@ -36,8 +36,9 @@ def user_check():
 		conn = mysql.connect()
 		cursor = conn.cursor()
 		json = request.json
-		_usrName = json['usrName']
-		cursor.execute("SELECT Exists(SELECT * FROM user_table WHERE login_username = %s);",_usrName)
+		usrName = json['usrName']
+		print(usrName)
+		cursor.execute("SELECT Exists(SELECT * FROM user_table WHERE login_username = %s);",usrName)
 		empRows = cursor.fetchall()
 
 		respone = jsonify(empRows)
