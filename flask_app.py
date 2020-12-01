@@ -28,21 +28,23 @@ def user_table():
 	except Exception as e:
 		print(e)
 	finally:
-		cursor.close() 
+		cursor.close()
 		conn.close()
 @app.route('/user_check',methods=['POST'])
 def user_check():
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor()
-		print(request.json)
-		json = request.json
+		json = request.get_json(force=True)
 		usrName = json['usrName']
-		print(usrName)
-		cursor.execute("SELECT Exists(SELECT * FROM user_table WHERE login_username = %s);",usrName)
+		cursor.execute("SELECT Exists(SELECT * FROM user_table WHERE login_username = %s) AS exist;",usrName)
+		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
-
-		respone = jsonify(empRows)
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+		#return json.dumps(json_data)
+		respone = jsonify(json_data)
 		respone.status_code = 200
 		return respone
 
@@ -57,10 +59,10 @@ def user_check():
 		respone.status_code = 500
 		return respone
 	finally:
-		cursor.close() 
+		cursor.close()
 		conn.close()
 
-		
+
 @app.errorhandler(404)
 def not_found(error=None):
 	message = {
@@ -70,6 +72,6 @@ def not_found(error=None):
 	respone = jsonify(message)
 	respone.status_code = 404
 	return respone
-		
+
 if __name__ == "__main__":
 	app.run()
