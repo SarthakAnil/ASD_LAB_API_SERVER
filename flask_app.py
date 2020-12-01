@@ -70,8 +70,8 @@ def pass_check():
 		conn = mysql.connect()
 		cursor = conn.cursor()
 		json = request.get_json(force=True)
-		usrPass = json['pass']
-		cursor.execute("SELECT pass FROM user_table where login_username = '%s'",usrPass)
+		usrName = json['usrName']
+		cursor.execute("SELECT pass FROM user_table where login_username = '%s'",usrName)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
 		json_data=[]
