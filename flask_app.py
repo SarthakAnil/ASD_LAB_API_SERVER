@@ -30,12 +30,14 @@ def user_table():
 	finally:
 		cursor.close() 
 		conn.close()
-@app.route('/user_check<int:usrName>')
-def user_check(usrName):
+@app.route('/user_check')
+def user_check():
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor()
-		cursor.execute("SELECT Exists(SELECT * FROM user_table WHERE login_username = %s);",usrName)
+		json = request.json
+		_usrName = json['usrName']
+		cursor.execute("SELECT Exists(SELECT * FROM user_table WHERE login_username = %s);",_usrName)
 		empRows = cursor.fetchall()
 
 		respone = jsonify(empRows)
