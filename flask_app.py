@@ -105,15 +105,15 @@ def get_user_data():
 		SELECT * FROM (
 		(SELECT Concat(COALESCE(Upper(first_name),'')," ",COALESCE(Upper(middle_name),'')," ",COALESCE(upper(last_name),'')) As 'Name',
 		userid,teacher_email AS email,"" AS batch_id
-		FROM teacher) 
-		UNION 
+		FROM teacher)
+		UNION
 		(SELECT Concat(COALESCE(Upper(first_name),'')," ",COALESCE(Upper(middle_name),'')," ",COALESCE(upper(last_name),'')) As 'Name',
-		userid,student_email AS email,batch_id 
+		userid,student_email AS email,batch_id
 		FROM student)) H
-		NATURAL JOIN 
-		user_table 
-		WHERE 
-		login_username ="%s";
+		NATURAL JOIN
+		user_table
+		WHERE
+		login_username =%s
 		''',usrName)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
