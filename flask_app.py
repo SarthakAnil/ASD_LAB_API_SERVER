@@ -71,7 +71,7 @@ def pass_check():
 		cursor = conn.cursor()
 		json = request.get_json(force=True)
 		usrName = json['usrName']
-		cursor.execute("SELECT pass FROM user_table where login_username = '%s'",usrName)
+		cursor.execute("SELECT pass FROM user_table where login_username = %s",usrName)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
 		json_data=[]
