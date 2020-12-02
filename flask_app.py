@@ -93,6 +93,49 @@ def pass_check():
 	finally:
 		cursor.close()
 		conn.close()
+##///////////////////////////////////////////////////////////////////////////////////////////////////////
+@app.route('/get_user_data',methods=['POST'])
+def get_user_data():
+	try:
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		json = request.get_json(force=True)
+		usrName = json['usrName']
+		cursor.execute('''
+		SELECT * FROM (
+		(SELECT Concat(COALESCE(Upper(first_name),'')," ",COALESCE(Upper(middle_name),'')," ",COALESCE(upper(last_name),'')) As 'Name',
+		userid,teacher_email AS email,"" AS batch_id
+		FROM teacher) 
+		UNION 
+		(SELECT Concat(COALESCE(Upper(first_name),'')," ",COALESCE(Upper(middle_name),'')," ",COALESCE(upper(last_name),'')) As 'Name',
+		userid,student_email AS email,batch_id 
+		FROM student)) H
+		NATURAL JOIN 
+		user_table 
+		WHERE 
+		login_username ="%s";
+		''',usrName)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+		respone = jsonify(json_data)
+		respone.status_code = 200
+		return respone
+
+	except Exception as e:
+		print(e)
+		message = {
+		'status': 500,
+		'message': 'error in method ',
+		}
+		respone = jsonify(message)
+		respone.status_code = 500
+		return respone
+	finally:
+		cursor.close()
+		conn.close()
 ###########################################################################################################
 @app.errorhandler(404)
 def not_found(error=None):
