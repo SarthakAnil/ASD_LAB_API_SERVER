@@ -17,13 +17,12 @@ def change_pass():
 		usrName = json['usrName']
 		password = json['pass']
 		cursor.execute("UPDATE user_table SET pass =%s where login_username =%s;",(password,usrName))
-		row_headers=[x[0] for x in cursor.description]
-		empRows = cursor.fetchall()
-		json_data=[]
-		for result in empRows:
-			json_data.append(dict(zip(row_headers,result)))
-		#return json.dumps(json_data)
-		respone = jsonify(json_data)
+		conn.commit()
+		message = {
+		'status': 200,
+		'message': 'updated ',
+		}
+		respone = jsonify(message)
 		respone.status_code = 200
 		return respone
 
