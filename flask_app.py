@@ -16,7 +16,7 @@ def change_pass():
 		json = request.get_json(force=True)
 		usrName = json['usrName']
 		password = json['pass']
-		cursor.execute("UPDATE table user_table SET pass =%s where login_username =%s;",(password,usrName))
+		cursor.execute("UPDATE user_table SET pass =%s where login_username =%s;",(password,usrName))
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
 		json_data=[]
