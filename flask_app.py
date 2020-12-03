@@ -39,6 +39,57 @@ def change_pass():
 	finally:
 		cursor.close()
 		conn.close()
+		######################################################################
+@app.route('/put_events',methods=['POST'])
+def put_events():
+	try:
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		json = request.get_json(force=True)
+		batch_id = json['batch_id']
+		event_desc = json['event_desc']
+		event_id = json['event_id']
+		event_name = json['event_name']
+		userid = json['userid']
+
+
+		cursor.execute('''insert into 
+								events (
+									event_id, 
+									userid, 
+									batch_id, 
+									event_name, 
+									event_desc
+								)
+								values
+								(%s,%s,%s,%s,%s);
+  								''',(event_id, 
+									userid, 
+									batch_id, 
+									event_name, 
+									event_desc))
+		conn.commit()
+		message = {
+		'status': 200,
+		'message': 'updated ',
+		}
+		respone = jsonify(message)
+		respone.status_code = 200
+		return respone
+
+	except Exception as e:
+		print(e)
+		message = {
+		'status': 500,
+		'message': 'error in method ',
+		#'ERROR': e,
+		}
+		respone = jsonify(message)
+		respone.status_code = 500
+		return respone
+	finally:
+		cursor.close()
+		conn.close()
 ##///////////////////////////////////////////////////////////////////////////////////////////////////////
 ##########################################################################################
 @app.route('/get_events',methods=['POST'])
