@@ -15,14 +15,9 @@ def user_table():
 		cursor = conn.cursor()
 		json = request.get_json(force=True)
 		usrID = json['usrID']
-		cursor.execute('''
-		SELECT * FROM events
-		WHERE batch_id =(
-			SELECT batch_id from student WHERE userid = %s
-					);
-		''',usrID)
+		cursor.callproc('retEvent', [usrID, ])
 		row_headers=[x[0] for x in cursor.description]
-		empRows = cursor.fetchall()
+		empRows = cursor.stored_results()
 		json_data=[]
 		for result in empRows:
 			json_data.append(dict(zip(row_headers,result)))
