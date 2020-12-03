@@ -8,18 +8,24 @@ from config import mysql
 def hello_world():
     return 'Hello from Flask!'
 ##########################################################################################
-@app.route('/user_table')
+@app.route('/get_events',methods=['POST'])
 def user_table():
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor()
-		cursor.execute("Select * from user_table")
+		json = request.get_json(force=True)
+		usrID = json['usrID']
+		cursor.execute('''
+		SELECT * FROM events
+		WHERE batch_id =(
+			SELECT batch_id from student WHERE userid = %s
+					);
+		''',usrID)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
 		json_data=[]
 		for result in empRows:
 			json_data.append(dict(zip(row_headers,result)))
-		#return json.dumps(json_data)
 		respone = jsonify(json_data)
 		respone.status_code = 200
 		return respone
