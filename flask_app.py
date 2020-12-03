@@ -17,7 +17,7 @@ def user_table():
 		usrID = json['usrID']
 		cursor.callproc('retEvent', [usrID, ])
 		row_headers=[x[0] for x in cursor.description]
-		empRows = cursor.stored_results()
+		empRows = cursor.cursor.fetchall()
 		json_data=[]
 		for result in empRows:
 			json_data.append(dict(zip(row_headers,result)))
