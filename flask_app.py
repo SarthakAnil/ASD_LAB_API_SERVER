@@ -253,7 +253,7 @@ def get_time_Table():
 		json = request.get_json(force=True)
 		batchID = json['batchID']
 		cursor.execute('''
-		SELECT * FROM hour 
+		SELECT course_id,hour_id FROM hour 
 		WHERE table_id =(
 							SELECT table_id 
 							FROM batch
