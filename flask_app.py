@@ -254,7 +254,12 @@ def get_time_Table():
 		json = request.get_json(force=True)
 		batchID = json['batchID']
 		cursor.execute('''
-		SELECT * FROM hour  LEFT  JOIN  (teach RIGHT   JOIN  course USING (course_id)) USING (course_id)
+		SELECT * FROM hour  
+		LEFT  JOIN  ((teach
+		RIGHT JOIN teacher USING (userid))
+		RIGHT JOIN  course USING (course_id)
+		) 
+		USING (course_id)
 		WHERE table_id =(
 							SELECT table_id 
 							FROM batch
@@ -272,7 +277,12 @@ def get_time_Table():
 		message["MONDAY"]=json_data
 		##EXECUTING FOR TUESDAY
 		cursor.execute('''
-		SELECT * FROM hour  LEFT  JOIN  (teach RIGHT   JOIN  course USING (course_id)) USING (course_id)
+		SELECT * FROM hour  
+		LEFT  JOIN  ((teach
+		RIGHT JOIN teacher USING (userid))
+		RIGHT JOIN  course USING (course_id)
+		) 
+		USING (course_id)
 		WHERE table_id =(
 							SELECT table_id 
 							FROM batch
@@ -290,7 +300,12 @@ def get_time_Table():
 		message["TUESDAY"]=json_data
 		##EXECUTING FOR WEDNESDAY
 		cursor.execute('''
-		SELECT * FROM hour  LEFT  JOIN  (teach RIGHT   JOIN  course USING (course_id)) USING (course_id)
+		SELECT * FROM hour  
+		LEFT  JOIN  ((teach
+		RIGHT JOIN teacher USING (userid))
+		RIGHT JOIN  course USING (course_id)
+		) 
+		USING (course_id)
 		WHERE table_id =(
 							SELECT table_id 
 							FROM batch
@@ -308,7 +323,12 @@ def get_time_Table():
 		message["WEDNESDAY"]=json_data
 		##EXECUTING FOR THURSDAY
 		cursor.execute('''
-		SELECT * FROM hour  LEFT  JOIN  (teach RIGHT   JOIN  course USING (course_id)) USING (course_id)
+		SELECT * FROM hour  
+		LEFT  JOIN  ((teach
+		RIGHT JOIN teacher USING (userid))
+		RIGHT JOIN  course USING (course_id)
+		) 
+		USING (course_id)
 		WHERE table_id =(
 							SELECT table_id 
 							FROM batch
@@ -326,7 +346,12 @@ def get_time_Table():
 		message["THURSDAY"]=json_data
 		##EXECUTING FOR FRIDAY
 		cursor.execute('''
-		SELECT * FROM hour  LEFT  JOIN  (teach RIGHT   JOIN  course USING (course_id)) USING (course_id)
+		SELECT * FROM hour  
+		LEFT  JOIN  ((teach
+		RIGHT JOIN teacher USING (userid))
+		RIGHT JOIN  course USING (course_id)
+		) 
+		USING (course_id)
 		WHERE table_id =(
 							SELECT table_id 
 							FROM batch
