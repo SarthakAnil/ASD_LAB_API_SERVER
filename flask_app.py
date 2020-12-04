@@ -243,6 +243,50 @@ def pass_check():
 	finally:
 		cursor.close()
 		conn.close()
+
+##///////////////////////////////////////////////////////////////////////////////////////////////////////
+@app.route('/get_time_Table',methods=['POST'])
+def get_time_Table():
+	try:
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		json = request.get_json(force=True)
+		batchID = json['batchID']
+		cursor.execute('''
+		SELECT * FROM hour 
+		WHERE table_id =(
+							SELECT table_id 
+							FROM batch
+							WHERE batch_id =%s
+						)
+		AND day ='MONDAY'
+		ORDER BY hour_id ;  
+		''',batchID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+		respone = jsonify(json_data)
+		respone.status_code = 200
+		return respone
+
+	except Exception as e:
+		print(e)
+		message = {
+		'status': 500,
+		'message': 'error in method ',
+		}
+		respone = jsonify(message)
+		respone.status_code = 500
+		return respone
+	finally:
+		cursor.close()
+		conn.close()
+###########################################################################################################
+
+
+
 ##///////////////////////////////////////////////////////////////////////////////////////////////////////
 @app.route('/get_user_data',methods=['POST'])
 def get_user_data():
