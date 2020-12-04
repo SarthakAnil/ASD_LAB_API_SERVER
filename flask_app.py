@@ -248,19 +248,20 @@ def pass_check():
 @app.route('/get_time_Table',methods=['POST'])
 def get_time_Table():
 	try:
+		message = {}
 		conn = mysql.connect()
 		cursor = conn.cursor()
 		json = request.get_json(force=True)
 		batchID = json['batchID']
 		cursor.execute('''
-		SELECT course_id,hour_id FROM hour 
+		SELECT * FROM hour  LEFT  JOIN  teach RIGHT   JOIN  course USING (course_id) USING (course_id)
 		WHERE table_id =(
 							SELECT table_id 
 							FROM batch
 							WHERE batch_id =%s
 						)
 		AND day ='MONDAY'
-		ORDER BY hour_id ;  
+		ORDER BY hour_id ; 
 		''',batchID)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
@@ -268,10 +269,79 @@ def get_time_Table():
 		for result in empRows:
 			json_data.append(dict(zip(row_headers,result)))
 
-		message = {
-		'mesage': 'it worked',
-		'MONDAY': json_data,
-		}
+		message["MONDAY"]=json_data
+		##EXECUTING FOR TUESDAY
+		cursor.execute('''
+		SELECT * FROM hour  LEFT  JOIN  teach RIGHT   JOIN  course USING (course_id) USING (course_id)
+		WHERE table_id =(
+							SELECT table_id 
+							FROM batch
+							WHERE batch_id =%s
+						)
+		AND day ='TUESDAY'
+		ORDER BY hour_id ; 
+		''',batchID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+
+		message["TUESDAY"]=json_data
+		##EXECUTING FOR WEDNESDAY
+		cursor.execute('''
+		SELECT * FROM hour  LEFT  JOIN  teach RIGHT   JOIN  course USING (course_id) USING (course_id)
+		WHERE table_id =(
+							SELECT table_id 
+							FROM batch
+							WHERE batch_id =%s
+						)
+		AND day ='WEDNESDAY'
+		ORDER BY hour_id ; 
+		''',batchID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+
+		message["WEDNESDAY"]=json_data
+		##EXECUTING FOR THURSDAY
+		cursor.execute('''
+		SELECT * FROM hour  LEFT  JOIN  teach RIGHT   JOIN  course USING (course_id) USING (course_id)
+		WHERE table_id =(
+							SELECT table_id 
+							FROM batch
+							WHERE batch_id =%s
+						)
+		AND day ='THURSDAY'
+		ORDER BY hour_id ; 
+		''',batchID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+
+		message["THURSDAY"]=json_data
+		##EXECUTING FOR FRIDAY
+		cursor.execute('''
+		SELECT * FROM hour  LEFT  JOIN  teach RIGHT   JOIN  course USING (course_id) USING (course_id)
+		WHERE table_id =(
+							SELECT table_id 
+							FROM batch
+							WHERE batch_id =%s
+						)
+		AND day ='FRIDAY'
+		ORDER BY hour_id ; 
+		''',batchID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+
+		message["FRIDAY"]=json_data
 		respone = jsonify(message)
 		respone.status_code = 200
 		return respone
