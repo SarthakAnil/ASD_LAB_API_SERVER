@@ -156,7 +156,7 @@ def batchid_check():
 		cursor = conn.cursor()
 		json = request.get_json(force=True)
 		batchID = json['batchID']
-		cursor.execute("SELECT Exists(SELECT * FROM batch WHERE event_id = %s) AS exist;",batchID)
+		cursor.execute("SELECT Exists(SELECT * FROM batch WHERE batch_id = %s) AS exist;",batchID)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
 		json_data=[]
