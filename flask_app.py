@@ -267,7 +267,12 @@ def get_time_Table():
 		json_data=[]
 		for result in empRows:
 			json_data.append(dict(zip(row_headers,result)))
-		respone = jsonify(json_data)
+
+		message = {
+		'mesage': 'it worked',
+		'MONDAY': json_data,
+		}
+		respone = jsonify(message)
 		respone.status_code = 200
 		return respone
 
