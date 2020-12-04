@@ -149,6 +149,39 @@ def eventid_check():
 		conn.close()
 
 ##//////////////////////////////////////////////////////////////////////////////////////////////////////
+@app.route('/batchid_check',methods=['POST'])
+def batchid_check():
+	try:
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		json = request.get_json(force=True)
+		batchID = json['batchID']
+		cursor.execute("SELECT Exists(SELECT * FROM batch WHERE event_id = %s) AS exist;",batchID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+		#return json.dumps(json_data)
+		respone = jsonify(json_data)
+		respone.status_code = 200
+		return respone
+
+	except Exception as e:
+		print(e)
+		message = {
+		'status': 500,
+		'message': 'error in method ',
+		#'ERROR': e,
+		}
+		respone = jsonify(message)
+		respone.status_code = 500
+		return respone
+	finally:
+		cursor.close()
+		conn.close()
+
+##//////////////////////////////////////////////////////////////////////////////////////////////////////
 @app.route('/user_check',methods=['POST'])
 def user_check():
 	try:
