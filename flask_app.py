@@ -394,14 +394,15 @@ def get_teacher_TT():
 		json = request.get_json(force=True)
 		usrID = json['usrID']
 		cursor.execute('''
-		SELECT * FROM hour  
-		LEFT   JOIN teach
+		SELECT  * from hour
+		LEFT JOIN 
+		(teach RIGHT JOIN course 
+		USING (course_id))
 		USING (course_id)
-		WHERE 
-		day ='MONDAY'
-		AND 
-		userid = %s
-		ORDER BY hour_id ; 
+		WHERE userid = %s
+		AND day ='MONDAY'
+		ORDER BY hour_id 
+		; 
 		''',usrID)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
@@ -412,14 +413,15 @@ def get_teacher_TT():
 		message["MONDAY"]=json_data
 		##EXECUTING FOR TUESDAY
 		cursor.execute('''
-		SELECT * FROM hour  
-		LEFT   JOIN teach
+		SELECT  * from hour
+		LEFT JOIN 
+		(teach RIGHT JOIN course 
+		USING (course_id))
 		USING (course_id)
-		WHERE 
-		day ='TUESDAY'
-		AND 
-		userid = %s
-		ORDER BY hour_id ; 
+		WHERE userid = %s
+		AND day ='TUESDAY'
+		ORDER BY hour_id 
+		;  
 		''',usrID)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
@@ -430,14 +432,15 @@ def get_teacher_TT():
 		message["TUESDAY"]=json_data
 		##EXECUTING FOR WEDNESDAY
 		cursor.execute('''
-		SELECT * FROM hour  
-		LEFT   JOIN teach
+		SELECT  * from hour
+		LEFT JOIN 
+		(teach RIGHT JOIN course 
+		USING (course_id))
 		USING (course_id)
-		WHERE 
-		day ='WEDNESDAY'
-		AND 
-		userid = %s
-		ORDER BY hour_id ; 
+		WHERE userid = %s
+		AND day ='WEDNESDAY'
+		ORDER BY hour_id 
+		;  
 		''',usrID)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
@@ -448,14 +451,15 @@ def get_teacher_TT():
 		message["WEDNESDAY"]=json_data
 		##EXECUTING FOR THURSDAY
 		cursor.execute('''
-		SELECT * FROM hour  
-		LEFT   JOIN teach
+		SELECT  * from hour
+		LEFT JOIN 
+		(teach RIGHT JOIN course 
+		USING (course_id))
 		USING (course_id)
-		WHERE 
-		day ='THURSDAY'
-		AND 
-		userid = %s
-		ORDER BY hour_id ;  
+		WHERE userid = %s
+		AND day ='THURSDAY'
+		ORDER BY hour_id 
+		;   
 		''',usrID)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
@@ -466,14 +470,15 @@ def get_teacher_TT():
 		message["THURSDAY"]=json_data
 		##EXECUTING FOR FRIDAY
 		cursor.execute('''
-		SELECT * FROM hour  
-		LEFT   JOIN teach
+		SELECT  * from hour
+		LEFT JOIN 
+		(teach RIGHT JOIN course 
+		USING (course_id))
 		USING (course_id)
-		WHERE 
-		day ='FRIDAY'
-		AND 
-		userid = %s
-		ORDER BY hour_id ; 
+		WHERE userid = %s
+		AND day ='FRIDAY'
+		ORDER BY hour_id 
+		;  
 		''',usrID)
 		row_headers=[x[0] for x in cursor.description]
 		empRows = cursor.fetchall()
