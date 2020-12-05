@@ -401,7 +401,7 @@ def get_teacher_TT():
 		USING (course_id)
 		) USING (course_id)
 		) USING  (table_id) 
-		WHERE userid = %S
+		WHERE userid = %s
 		AND day ='MONDAY'
 		ORDER BY hour_id
 		; 
@@ -422,7 +422,7 @@ def get_teacher_TT():
 		USING (course_id)
 		) USING (course_id)
 		) USING  (table_id) 
-		WHERE userid = %S
+		WHERE userid = %s
 		AND day ='TUESDAY'
 		ORDER BY hour_id
 		;  
@@ -443,7 +443,7 @@ def get_teacher_TT():
 		USING (course_id)
 		) USING (course_id)
 		) USING  (table_id) 
-		WHERE userid = %S
+		WHERE userid = %s
 		AND day ='WEDNESDAY'
 		ORDER BY hour_id
 		;  
@@ -464,7 +464,7 @@ def get_teacher_TT():
 		USING (course_id)
 		) USING (course_id)
 		) USING  (table_id) 
-		WHERE userid = %S
+		WHERE userid = %s
 		AND day ='THURSDAY'
 		ORDER BY hour_id
 		;  
@@ -485,7 +485,7 @@ def get_teacher_TT():
 		USING (course_id)
 		) USING (course_id)
 		) USING  (table_id) 
-		WHERE userid = %S
+		WHERE userid = %s
 		AND day ='FRIDAY'
 		ORDER BY hour_id
 		;  
