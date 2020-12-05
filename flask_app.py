@@ -384,7 +384,121 @@ def get_time_Table():
 		cursor.close()
 		conn.close()
 ###########################################################################################################
+##///////////////////////////////////////////////////////////////////////////////////////////////////////
+@app.route('/get_teacher_TT',methods=['POST'])
+def get_teacher_TT():
+	try:
+		message = {}
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		json = request.get_json(force=True)
+		usrID = json['usrID']
+		cursor.execute('''
+		SELECT * FROM hour  
+		LEFT   JOIN teach
+		USING (course_id)
+		WHERE 
+		day ='MONDAY'
+		AND 
+		userid = %s
+		ORDER BY hour_id ; 
+		''',usrID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
 
+		message["MONDAY"]=json_data
+		##EXECUTING FOR TUESDAY
+		cursor.execute('''
+		SELECT * FROM hour  
+		LEFT   JOIN teach
+		USING (course_id)
+		WHERE 
+		day ='TUESDAY'
+		AND 
+		userid = %s
+		ORDER BY hour_id ; 
+		''',usrID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+
+		message["TUESDAY"]=json_data
+		##EXECUTING FOR WEDNESDAY
+		cursor.execute('''
+		SELECT * FROM hour  
+		LEFT   JOIN teach
+		USING (course_id)
+		WHERE 
+		day ='WEDNESDAY'
+		AND 
+		userid = %s
+		ORDER BY hour_id ; 
+		''',usrID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+
+		message["WEDNESDAY"]=json_data
+		##EXECUTING FOR THURSDAY
+		cursor.execute('''
+		SELECT * FROM hour  
+		LEFT   JOIN teach
+		USING (course_id)
+		WHERE 
+		day ='THURSDAY'
+		AND 
+		userid = %s
+		ORDER BY hour_id ;  
+		''',usrID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+
+		message["THURSDAY"]=json_data
+		##EXECUTING FOR FRIDAY
+		cursor.execute('''
+		SELECT * FROM hour  
+		LEFT   JOIN teach
+		USING (course_id)
+		WHERE 
+		day ='FRIDAY'
+		AND 
+		userid = %s
+		ORDER BY hour_id ; 
+		''',usrID)
+		row_headers=[x[0] for x in cursor.description]
+		empRows = cursor.fetchall()
+		json_data=[]
+		for result in empRows:
+			json_data.append(dict(zip(row_headers,result)))
+
+		message["FRIDAY"]=json_data
+		respone = jsonify(message)
+		respone.status_code = 200
+		return respone
+
+	except Exception as e:
+		print(e)
+		message = {
+		'status': 500,
+		'message': 'error in method ',
+		}
+		respone = jsonify(message)
+		respone.status_code = 500
+		return respone
+	finally:
+		cursor.close()
+		conn.close()
+###########################################################################################################
 
 
 ##///////////////////////////////////////////////////////////////////////////////////////////////////////
